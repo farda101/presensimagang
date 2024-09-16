@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internship Diary | Login</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='login.css') }}"
+    />
+    <link rel="icon" href="{{ url_for('static', filename='images/logo-icon.png') }}">
+  </head>
+  <body>
+    {% if request.args.get('logout_success') %}
+    <div id="logoutSuccessPopup" class="popup">
+      <div class="popup-content">
+        <p>Logout Successful!</p>
+        <div class="checkmark">&#10004;</div>
+      </div>
+    </div>
+    {% endif %}
+    <div class="login-container">
+      <div class="login-box">
+        <div class="left-panel">
+          <h1>Internship <span>Diary</span><span class="possessive">'s</span></h1>
+          <p>Track Your Internship Journey Easily.</p>
+          {% if error %}
+          <div class="error-message">{{ error }}</div>
+          {% endif %}
+          <form action="/" method="POST">
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              required
+            />
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+            <div class="additional-options">
+              <label>
+                <input type="checkbox" onclick="togglePassword()" /> Show
+                Password
+              </label>
+            </div>
+            <button type="submit">Login</button>
+            <div class="copy">
+              <p>Copyright &copy; 2024 Internship Diary | <a href="{{ url_for('credit') }}" class="credit">Credit</a></p>
+            </div>
+          </form>
+        </div>
+        <div class="right-panel">
+          <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="Logo"
+          />
+        </div>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>

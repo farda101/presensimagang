@@ -1,0 +1,474 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 10px 50px;
+  max-width: 100%;
+  margin: 0 auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.6s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.navbar .logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.navbar .logo a {
+  text-decoration: none;
+}
+
+.navbar .logo .internship {
+  line-height: 1.2;
+  font-weight: bold;
+  font-size: 10px;
+  color: black;
+}
+
+.navbar .logo span {
+  color: orange;
+}
+
+.navbar .logo .possessive {
+  color: #0c3b73;
+  font-weight: bold;
+  font-size: 12px;
+  vertical-align: super;
+}
+
+.navbar .menu-icon {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.navbar ul li {
+  margin: 0 15px;
+  transition: transform 0.1s ease;
+}
+
+.navbar ul li:hover {
+  transform: scale(1.1);
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+  transition: color 0.3s ease;
+  padding-bottom: 5px;
+}
+
+.navbar ul li a:hover {
+  color: orange;
+}
+
+.navbar ul li a.active {
+  border-bottom: 2px solid orange;
+}
+
+.navbar .profile {
+  position: relative;
+  display: inline-block;
+}
+
+.navbar .profile img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.navbar .profile img:hover {
+  transform: scale(1.1);
+}
+
+.navbar .profile.active img {
+  transform: scale(1.1);
+}
+
+.navbar .profile .dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: white;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+}
+
+.navbar .profile .dropdown-content a {
+  color: black;
+  padding: 12px 26px;
+  text-decoration: none;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.navbar .profile .dropdown-content a:hover {
+  color: orange;
+  transform: scale(1.1);
+}
+
+.navbar .profile .dropdown-content a.active {
+  border-bottom: 2px solid orange;
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 70%;
+  height: 100%;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.mobile-menu .close-menu {
+  align-self: flex-end;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.mobile-menu .profile-info {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.mobile-menu .profile-info img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.mobile-menu .profile-info p {
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.mobile-menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.mobile-menu ul li {
+  margin: 10px 0;
+  transition: transform 0.1s ease;
+}
+
+.mobile-menu ul li:hover {
+  transform: scale(1.1);
+}
+
+.mobile-menu ul li a {
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+  display: inline-block;
+  padding: 10px 0;
+  transition: color 0.3s ease;
+}
+
+.mobile-menu ul li a:hover {
+  color: orange;
+}
+
+.mobile-menu ul li a.active {
+  border-bottom: 2px solid orange;
+  padding-bottom: 2px;
+}
+
+/* Container for Back Icon */
+.back-icon-container {
+  margin-bottom: 15px;
+}
+
+/* Style the Back arrow*/
+.back-arrow {
+  font-size: 25px; /* This should increase the size of the icon */
+  cursor: pointer;
+  color: #6c757d;
+  transition: color 0.3s ease;
+}
+
+.back-arrow:hover {
+  color: #5a6268;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 40px auto;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.task-header {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.export-btn {
+  background-color: #0c3b73;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 15%;
+}
+
+.export-btn:hover {
+  background-color: rgb(25, 78, 130);
+}
+
+.task-header input[type="text"] {
+  width: 15%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  background-color: white;
+  background-image: url("/static/images/searchicon.jpeg");
+  background-position: 10px 10px;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  padding: 10px 20px 12px 40px;
+  transition: width 0.4s ease-in-out;
+}
+
+input[type="text"]:focus {
+  width: 84%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table thead th {
+  text-align: center;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-weight: bold;
+}
+
+table thead th i {
+  margin-right: 5px; /* Adds space between icon and text */
+  color: #6c6c6c; /* Optional: change icon color */
+}
+
+table tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #e5e5e5;
+  text-align: center;
+}
+
+table th:nth-child(1),
+table td:nth-child(1) {
+  width: 5%; /* NO */
+}
+
+table th:nth-child(2) {
+  width: 40%; /* JUDUL PROJECT */
+}
+
+table td:nth-child(2) {
+  text-align: left;
+}
+
+table th:nth-child(3),
+table td:nth-child(3) {
+  width: 10%; /* STATUS */
+}
+
+table th:nth-child(4),
+table td:nth-child(4) {
+  width: 20%; /* DEADLINE */
+}
+
+table th:nth-child(5),
+table td:nth-child(5) {
+  width: 25%; /* NAME */
+}
+
+.pagination-controls {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination-controls button {
+  padding: 8px 16px;
+  border-radius: 5px;
+  margin: 0 5px;
+  background-color: #ff8500;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination-controls button:hover {
+  background-color: #e07600;
+}
+
+.pagination-controls button:disabled {
+  background-color: #ddd;
+}
+
+.pagination-controls span {
+  font-size: 16px;
+  margin: 0 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 10px 30px;
+  }
+
+  .export-btn {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 20px;
+  }
+
+  .navbar .menu-icon {
+    display: block;
+  }
+
+  .navbar ul {
+    display: none;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .export-btn {
+    width: 20%;
+    font-size: 11px;
+  }
+
+  .task-header input[type="text"] {
+    width: 20%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    background-color: white;
+    background-image: url("/static/images/searchicon.jpeg");
+    background-position: 10px 10px;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    padding: 10px 20px 10px 40px;
+    transition: width 0.4s ease-in-out;
+  }
+  
+  input[type="text"]:focus {
+    width: 79%;
+  }
+
+
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  table th,
+  table td {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px 15px;
+  }
+
+  .task-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px; /* Memberikan jarak antara tombol dan input */
+  }
+
+  .export-btn {
+    width: 40%;
+    font-size: 11px;
+    padding: 14px;
+  }
+
+  .task-header input[type="text"] {
+    width: 57%;
+  }
+}

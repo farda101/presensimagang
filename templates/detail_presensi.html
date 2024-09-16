@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internship Diary | Presence</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='detail_presensi.css') }}"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/logo-icon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="logo">
+        <a href="{{ url_for('home_dosen') }}">
+          <div class="internship">Internship</div>
+          <div><span>Diary</span><span class="possessive">'s</span></div>
+        </a>
+      </div>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+      <ul>
+        <li><a href="{{ url_for('home_dosen') }}">Home</a></li>
+        <li>
+          <a href="{{ url_for('detail_presensi') }}" class="active">Presence</a>
+        </li>
+        <li><a href="{{ url_for('detail_project') }}">Project</a></li>
+      </ul>
+      <div class="profile">
+        <img
+          src="{{ url_for('static', filename=dosen.foto_profil if dosen.foto_profil else 'uploads/default_user_icon.png') }}"
+          alt="Foto Profil"
+          class="profile-icon"
+          id="profileIcon"
+        />
+        <div class="dropdown-content" id="dropdownContent">
+          <a href="{{ url_for('profil_dosen') }}">Profile</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="close-menu" onclick="toggleMenu()">&times;</div>
+      <div class="profile-info">
+        <a href="{{ url_for('profil_dosen') }}">
+          <img
+            src="{{ url_for('static', filename=dosen.foto_profil if dosen.foto_profil else 'uploads/default_user_icon.png') }}"
+            alt="Foto Profil"
+          />
+        </a>
+        <p class="nama-dosen">{{ dosen.nama }}</p>
+      </div>
+      <ul>
+        <li><a href="{{ url_for('home_dosen') }}">Home</a></li>
+        <li>
+          <a href="{{ url_for('detail_presensi') }}" class="active">Presence</a>
+        </li>
+        <li><a href="{{ url_for('detail_project') }}">Project</a></li>
+      </ul>
+    </div>
+
+    <div class="content">
+      <!-- Back Arrow Icon Above Form -->
+      <div class="back-icon-container">
+        <i class="fas fa-chevron-left back-arrow" onclick="goBack()"></i>
+      </div>
+      <h2>Presence Data</h2>
+      <div class="task-header">
+        <button
+          class="export-btn"
+          onclick="window.location.href='/export_excel/mentor'"
+        >
+          EXPORT TO EXCEL
+        </button>
+        <input
+          type="text"
+          placeholder="Search..."
+          class="search-box"
+          id="searchPresensiInputDosen"
+          onkeyup="searchPresensiDosen()"
+        />
+      </div>
+
+      <table id="presenceTable" class="table-pagination">
+        <thead>
+          <tr>
+            <th>NO</th>
+            <th><i class="fas fa-clock"></i>PRESENCE TIME</th>
+            <th><i class="fas fa-user"></i>NAME</th>
+            <th><i class="fas fa-info-circle"></i>STATUS</th>
+            <th><i class="fas fa-file-alt"></i>TASK DESCRIPTION</th>
+            <th><i class="fas fa-list-check"></i>APPROVAL MENTOR</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for presensi in presensi_mahasiswa %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>
+              {{ presensi['waktu_presensi'].strftime('%d %B %Y %H:%M WIB') }}
+            </td>
+            <td>{{ presensi['nama_mahasiswa'] }}</td>
+            <td>
+              <div
+                class="status-bg {% if presensi['status'] == 'Hadir' %} hadir {% elif presensi['status'] == 'Sakit' %} sakit {% elif presensi['status'] == 'Izin' %} izin {% elif presensi['status'] == 'Alpha' %} alpha {% endif %}"
+              >
+                {{ presensi['status'] }}
+              </div>
+            </td>
+            <td>
+              {% if presensi['status'] == "Izin" or presensi['status'] ==
+              "Sakit" or presensi['status'] == "Alpha" %} - {% else %}{{
+              presensi['uraian_tugas'] | safe }}{% endif %}
+            </td>
+            <td>
+              <input
+                type="checkbox"
+                class="non-clickable"
+                {%
+                if
+                presensi.approval_mentor
+                %}checked{%
+                endif
+                %}
+              />
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Pagination Controls -->
+      <div class="pagination-controls">
+        <button id="btnPrev" onclick="prevPage('presenceTable')">Prev</button>
+        <span id="pageNumber-presenceTable"></span>
+        <button id="btnNext" onclick="nextPage('presenceTable')">Next</button>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+  </body>
+</html>

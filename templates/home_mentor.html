@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internship Diary | Home</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='home_mentor.css') }}"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/logo-icon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    {% if request.args.get('login_success') %}
+    <div id="loginSuccessPopup" class="popup">
+      <div class="popup-content">
+        <p>Login Successful!</p>
+        <div class="checkmark">&#10004;</div>
+      </div>
+    </div>
+    {% endif %}
+    <div class="navbar">
+      <div class="logo">
+        <a href="{{ url_for('home_mentor') }}">
+          <div class="internship">Internship</div>
+          <div><span>Diary</span><span class="possessive">'s</span></div>
+        </a>
+      </div>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+      <ul>
+        <li>
+          <a href="{{ url_for('home_mentor') }}" class="active">Home</a>
+        </li>
+        <li><a href="{{ url_for('project_mentor') }}">Project</a></li>
+      </ul>
+      <div class="profile">
+        <img
+          src="{{ url_for('static', filename=mentor.foto_profil if mentor.foto_profil else 'uploads/default_user_icon.png') }}"
+          alt="Foto Profil"
+          class="profile-icon"
+          id="profileIcon"
+        />
+        <div class="dropdown-content" id="dropdownContent">
+          <a href="{{ url_for('profil_mentor') }}">Profile</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="close-menu" onclick="toggleMenu()">&times;</div>
+      <div class="profile-info">
+        <a href="{{ url_for('profil_mentor') }}">
+          <img
+            src="{{ url_for('static', filename=mentor.foto_profil if mentor.foto_profil else 'uploads/default_user_icon.png') }}"
+            alt="Foto Profil"
+          />
+        </a>
+        <p class="nama-mentor">{{ mentor.nama }}</p>
+      </div>
+      <ul>
+        <li><a href="{{ url_for('home_mentor') }}" class="active">Home</a></li>
+        <li><a href="{{ url_for('project_mentor') }}">Project</a></li>
+      </ul>
+    </div>
+
+    <div class="content">
+      <h2>Dashboard</h2>
+      <div class="status-box">
+        <div class="status mahasiswa">
+          <div class="status-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="status-content">
+            <h3>{{ total_mahasiswa }}</h3>
+            <p>TOTAL INTERN MEMBERS</p>
+          </div>
+        </div>
+        <div class="status ongoing">
+          <div class="status-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="status-content">
+            <h3>{{ total_ongoing }}</h3>
+            <p>TOTAL PROJECT ON GOING</p>
+          </div>
+        </div>
+        <div class="status completed">
+          <div class="status-icon">
+            <i class="fas fa-check-square"></i>
+          </div>
+          <div class="status-content">
+            <h3>{{ total_completed }}</h3>
+            <p>TOTAL PROJECT COMPLETED</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="task-header">
+        <button
+          class="export-btn"
+          onclick="window.location.href='/export_excel/mentor'"
+        >
+          EXPORT TO EXCEL
+        </button>
+        <input
+          type="text"
+          placeholder="Search..."
+          class="search-box"
+          id="searchPresensiInputMentor"
+          onkeyup="searchPresensiMentor()"
+        />
+      </div>
+
+      <table id="presenceTable" class="table-pagination">
+        <thead>
+          <tr>
+            <th>NO</th>
+            <th><i class="fas fa-calendar-alt"></i>PRESENCE TIME</th>
+            <th><i class="fas fa-user"></i>NAME</th>
+            <th><i class="fas fa-info-circle"></i>STATUS</th>
+            <th><i class="fas fa-file-alt"></i>TASK DESCRIPTION</th>
+            <th><i class="fas fa-list-check"></i>APPROVAL MENTOR</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pres in presensi %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ pres.waktu_presensi.strftime('%d %B %Y %H:%M WIB') }}</td>
+            <td>{{ pres.nama_mahasiswa }}</td>
+            <td>
+              <div
+                class="status-bg {% if pres.status == 'Hadir' %} hadir {% elif pres.status == 'Sakit' %} sakit {% elif pres.status == 'Izin' %} izin {% elif pres.status == 'Alpha' %} alpha {% endif %}"
+              >
+                {{ pres.status }}
+              </div>
+            </td>
+            <td>
+              {% if pres.status == "Izin" or pres.status == "Sakit" or
+              pres.status == "Alpha" %} - {% else %}{{ pres.uraian_tugas | safe
+              }}{% endif %}
+            </td>
+            <td>
+              <input
+                type="checkbox"
+                onclick="updateApproval(this, {{pres.id }})"
+                {%
+                if
+                pres.approval_mentor
+                %}checked{%
+                endif
+                %}
+              />
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Pagination Controls -->
+      <div class="pagination-controls">
+        <button id="btnPrev" onclick="prevPage('presenceTable')">Prev</button>
+        <span id="pageNumber-presenceTable"></span>
+        <button id="btnNext" onclick="nextPage('presenceTable')">Next</button>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+  </body>
+</html>

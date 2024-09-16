@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Credits</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='credit.css') }}"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/logo-icon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="background">
+      <img src="static/images/its.png" alt="Background Image 1" />
+      <img src="static/images/poltek.png" alt="Background Image 2" />
+      <img src="static/images/id.png" alt="Background Image 3" />
+    </div>
+
+    <div class="credits">
+      <div class="back-icon-container">
+        <a href="{{ url_for('login') }}"><i class="fas fa-chevron-left back-arrow"></i></a>
+      </div>
+      <h1>Credits</h1>
+      <ul>
+        <li>
+          <img src="static/uploads/fadia.jpg" alt="Fadia Nufinikita" />
+          Fadia Nufinikita
+        </li>
+        <li>
+          <img src="static/uploads/yulia.jpg" alt="Yulia Trisnawati" />
+          Yulia Trisnawati
+        </li>
+        <li>
+          <img src="static/uploads/farda.jpg" alt="Farda Nur Jihan" />
+          Farda Nur Jihan
+        </li>
+        <li>
+          <img src="static/uploads/dimas.jpg" alt="Dimas Bintang Pratama" />
+          Dimas Bintang Pratama
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

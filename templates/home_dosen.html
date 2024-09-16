@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internship Diary | Home</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='home_dosen.css') }}"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/logo-icon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    {% if request.args.get('login_success') %}
+    <div id="loginSuccessPopup" class="popup">
+      <div class="popup-content">
+        <p>Login Successful!</p>
+        <div class="checkmark">&#10004;</div>
+      </div>
+    </div>
+    {% endif %}
+    <div class="navbar">
+      <div class="logo">
+        <a href="{{ url_for('home_dosen') }}">
+          <div class="internship">Internship</div>
+          <div><span>Diary</span><span class="possessive">'s</span></div>
+        </a>
+      </div>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+      <ul>
+        <li><a href="{{ url_for('home_dosen') }}" class="active">Home</a></li>
+        <li><a href="{{ url_for('detail_presensi') }}">Presence</a></li>
+        <li><a href="{{ url_for('detail_project') }}">Project</a></li>
+      </ul>
+      <div class="profile">
+        <img
+          src="{{ url_for('static', filename=dosen.foto_profil if dosen.foto_profil else 'uploads/default_user_icon.png') }}"
+          alt="Foto Profil"
+          class="profile-icon"
+          id="profileIcon"
+        />
+        <div class="dropdown-content" id="dropdownContent">
+          <a href="{{ url_for('profil_dosen') }}">Profile</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="close-menu" onclick="toggleMenu()">&times;</div>
+      <div class="profile-info">
+        <a href="{{ url_for('profil_dosen') }}">
+          <img
+            src="{{ url_for('static', filename=dosen.foto_profil if dosen.foto_profil else 'uploads/default_user_icon.png') }}"
+            alt="Foto Profil"
+          />
+        </a>
+        <p class="nama-dosen">{{ dosen.nama }}</p>
+      </div>
+      <ul>
+        <li><a href="{{ url_for('home_dosen') }}" class="active">Home</a></li>
+        <li><a href="{{ url_for('detail_presensi') }}">Presence</a></li>
+        <li><a href="{{ url_for('detail_project') }}">Project</a></li>
+      </ul>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <h2>Dashboard</h2>
+      <div class="status-box">
+        <div class="status mahasiswa">
+          <div class="status-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="status-content">
+            <h3>{{ total_mahasiswa }}</h3>
+            <p>TOTAL INTERN MEMBERS</p>
+          </div>
+        </div>
+        <div class="status mentor">
+          <div class="status-icon">
+            <i class="fas fa-user-tie"></i>
+          </div>
+          <div class="status-content">
+            <h3>{{ total_mentor }}</h3>
+            <p>TOTAL MENTORS</p>
+            <br />
+          </div>
+        </div>
+        <div class="status ongoing">
+          <div class="status-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="status-content">
+            <h3>{{ total_ongoing }}</h3>
+            <p>TOTAL PROJECT ON GOING</p>
+          </div>
+        </div>
+        <div class="status completed">
+          <div class="status-icon">
+            <i class="fas fa-check-square"></i>
+          </div>
+          <div class="status-content">
+            <h3>{{ total_completed }}</h3>
+            <p>TOTAL PROJECT COMPLETED</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts">
+        <div class="chart">
+          <h3>TODAY PRESENCE</h3>
+          <canvas id="kehadiranChart"></canvas>
+        </div>
+        <div class="chart">
+          <h3>PROJECT STATUS</h3>
+          <canvas id="statusProjectChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </body>
+</html>

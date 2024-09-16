@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internship Diary | Permission</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='permission_mahasiswa.css') }}"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/logo-icon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    {% if request.args.get('error') %}
+    <script>
+      alert("{{ request.args.get('error') }}");
+    </script>
+    {% endif %}
+    <div class="navbar">
+      <div class="logo">
+        <a href="{{ url_for('home_mahasiswa') }}">
+          <div class="internship">Internship</div>
+          <div><span>Diary</span><span class="possessive">'s</span></div>
+        </a>
+      </div>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+      <ul>
+        <li><a href="{{ url_for('home_mahasiswa') }}">Home</a></li>
+        <li><a href="{{ url_for('presensi_mahasiswa') }}">Presence</a></li>
+        <li>
+          <a href="{{ url_for('permission_mahasiswa') }}" class="active"
+            >Permission</a
+          >
+        </li>
+        <li><a href="{{ url_for('project_mahasiswa') }}">Project</a></li>
+      </ul>
+      <div class="profile">
+        <img
+          src="{{ url_for('static', filename=mahasiswa.foto_profil if mahasiswa.foto_profil else 'uploads/default_user_icon.png') }}"
+          alt="Foto Profil"
+          class="profile-icon"
+          id="profileIcon"
+        />
+        <div class="dropdown-content" id="dropdownContent">
+          <a href="{{ url_for('profil_mahasiswa') }}">Profile</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="close-menu" onclick="toggleMenu()">&times;</div>
+      <div class="profile-info">
+        <a href="{{ url_for('profil_mahasiswa') }}">
+          <img
+            src="{{ url_for('static', filename=mahasiswa.foto_profil if mahasiswa.foto_profil else 'uploads/default_user_icon.png') }}"
+            alt="Foto Profil"
+          />
+        </a>
+        <p class="nama-mahasiswa">{{ mahasiswa.nama }}</p>
+      </div>
+      <ul>
+        <li>
+          <a href="{{ url_for('home_mahasiswa') }}">Home</a>
+        </li>
+        <li><a href="{{ url_for('presensi_mahasiswa') }}">Presence</a></li>
+        <li>
+          <a href="{{ url_for('permission_mahasiswa') }}" class="active"
+            >Permission</a
+          >
+        </li>
+        <li><a href="{{ url_for('project_mahasiswa') }}">Project</a></li>
+      </ul>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Back Arrow Icon Above Form -->
+      <div class="back-icon-container">
+        <i class="fas fa-chevron-left back-arrow" onclick="goBack()"></i>
+      </div>
+      <h2>Permission Details</h2>
+      <div class="task-header">
+        <button class="add-btn" onclick="openPopup()">
+          ADD NEW PERMISSION
+        </button>
+        <input
+          type="text"
+          placeholder="Search"
+          class="search-project"
+          id="searchInput"
+          onkeyup="searchTable()"
+        />
+      </div>
+
+      <table id="presenceTable" class="table-pagination">
+        <thead>
+          <tr>
+            <th>NO</th>
+            <th><i class="fas fa-user"></i> NAME</th>
+            <th><i class="fas fa-calendar-alt"></i> START DATE</th>
+            <th><i class="fas fa-calendar-check"></i> COMPLETION DATE</th>
+            <th><i class="fas fa-info-circle"></i> STATUS</th>
+            <th><i class="fas fa-file-alt"></i> PROOF</th>
+            <th><i class="fas fa-sticky-note"></i> INFORMATION</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for permission in permissions %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ mahasiswa.nama }}</td>
+            <td>{{ permission.tanggal_mulai }}</td>
+            <td>{{ permission.tanggal_selesai }}</td>
+            <td>
+              <div
+                class="status-bg {% if permission.status == 'Sakit' %} sakit {% elif permission.status == 'Izin' %} izin {% endif %}"
+              >
+                {{ permission.status }}
+              </div>
+            </td>
+            <td>
+              {% if permission.bukti %}
+              <a
+                href="{{ url_for('static', filename='uploads/proof/' ~ permission.bukti) }}"
+                download="{{ permission.bukti }}"
+                >{{ permission.bukti }}</a
+              >
+              {% else %} No Proof {% endif %}
+            </td>
+            <td>{{ permission.keterangan }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Pagination Controls -->
+      <div class="pagination-controls">
+        <button id="btnPrev" onclick="prevPage('presenceTable')">Prev</button>
+        <span id="pageNumber-presenceTable"></span>
+        <button id="btnNext" onclick="nextPage('presenceTable')">Next</button>
+      </div>
+
+      <!-- Popup Form -->
+      <div id="permissionFormPopup" class="popup-form" style="display: none">
+        <div class="form-container">
+          <span class="close-popup" onclick="closePopup()">&times;</span>
+          <h2>Add New Permission</h2>
+          <form
+            action="{{ url_for('submit_permission') }}"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            <div class="form-group">
+              <label for="mulai">Start Date:</label>
+              <input type="date" id="mulai" name="mulai" required />
+            </div>
+            <div class="form-group">
+              <label for="selesai">End Date:</label>
+              <input type="date" id="selesai" name="selesai" required />
+            </div>
+            <div class="form-group">
+              <label for="status">Status:</label>
+              <select id="status" name="status">
+                <option value="Izin">Izin</option>
+                <option value="Sakit">Sakit</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="bukti">Proof:</label>
+              <input
+                type="file"
+                id="bukti"
+                name="bukti"
+                accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="keterangan">Information:</label>
+              <textarea id="keterangan" name="keterangan" rows="4"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+  </body>
+</html>

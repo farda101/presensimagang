@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internship Diary | Project</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='project_mentor.css') }}"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/logo-icon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="logo">
+        <a href="{{ url_for('home_mentor') }}">
+          <div class="internship">Internship</div>
+          <div><span>Diary</span><span class="possessive">'s</span></div>
+        </a>
+      </div>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+      <ul>
+        <li>
+          <a href="{{ url_for('home_mentor') }}">Home</a>
+        </li>
+        <li>
+          <a href="{{ url_for('project_mentor') }}" class="active">Project</a>
+        </li>
+      </ul>
+      <div class="profile">
+        <img
+          src="{{ url_for('static', filename=mentor.foto_profil if mentor.foto_profil else 'uploads/default_user_icon.png') }}"
+          alt="Foto Profil"
+          class="profile-icon"
+          id="profileIcon"
+        />
+        <div class="dropdown-content" id="dropdownContent">
+          <a href="{{ url_for('profil_mentor') }}">Profile</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="close-menu" onclick="toggleMenu()">&times;</div>
+      <div class="profile-info">
+        <a href="{{ url_for('profil_mentor') }}">
+          <img
+            src="{{ url_for('static', filename=mentor.foto_profil if mentor.foto_profil else 'uploads/default_user_icon.png') }}"
+            alt="Foto Profil"
+          />
+        </a>
+        <p class="nama-mentor">{{ mentor.nama }}</p>
+      </div>
+      <ul>
+        <li><a href="{{ url_for('home_mentor') }}">Home</a></li>
+        <li>
+          <a href="{{ url_for('project_mentor') }}" class="active">Project</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="content">
+      <!-- Back Arrow Icon Above Form -->
+      <div class="back-icon-container">
+        <a href="{{ url_for('home_mentor') }}">
+          <i class="fas fa-chevron-left back-arrow"></i>
+        </a>
+      </div>
+      <h2>Project Details</h2>
+      <div class="status-box">
+        <div class="status mahasiswa">
+          <div class="status-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="status-content">
+            <h3>{{ total_mahasiswa }}</h3>
+            <p>TOTAL INTERN MEMBERS</p>
+          </div>
+        </div>
+        <div class="status ongoing">
+          <div class="status-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="status-content">
+            <h3>{{ total_ongoing }}</h3>
+            <p>TOTAL PROJECT ON GOING</p>
+          </div>
+        </div>
+        <div class="status completed">
+          <div class="status-icon">
+            <i class="fas fa-check-square"></i>
+          </div>
+          <div class="status-content">
+            <h3>{{ total_completed }}</h3>
+            <p>TOTAL PROJECT COMPLETED</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="task-header">
+        <button class="add-btn" onclick="showTambahProjectModal()">
+          ADD NEW PROJECT
+        </button>
+        <input
+          type="text"
+          placeholder="Search..."
+          class="search-project"
+          id="searchProjectInputMentor"
+          onkeyup="searchProjectMentor()"
+        />
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>NO</th>
+            <th><i class="fas fa-file"></i> PROJECT TITLE</th>
+            <th><i class="fas fa-info-circle"></i> STATUS</th>
+            <th><i class="fas fa-calendar-alt"></i> DEADLINE</th>
+            <th><i class="fas fa-user"></i> NAME</th>
+            <th><i class="fas fa-tools"></i> ACTION</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for project in projects %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ project.judul_project }}</td>
+            <td>{{ 'On Going' if project.status == 0 else 'Completed' }}</td>
+            <td>{{ project.deadline }}</td>
+            <td>{{ project.mahasiswa }}</td>
+            <td>
+              <a
+                href="javascript:void(0);"
+                onclick="showEditProjectModal('{{ project.id }}')"
+                style="color: black"
+                ><i class="fas fa-edit"></i
+              ></a>
+              <form
+                action="{{ url_for('delete_project', id=project.id) }}"
+                method="post"
+                style="display: inline"
+              >
+                <button
+                  type="submit"
+                  onclick="return confirm('Apakah Anda yakin ingin menghapus project ini?')"
+                  style="
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    margin-left: 10px;
+                  "
+                >
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal for adding/editing project -->
+    <div id="tambahProjectModal">
+      <span class="close-popup" onclick="closeTambahProjectModal()"
+        >&times;</span
+      >
+      <h2>Add New Project</h2>
+      <form
+        id="tambahProjectForm"
+        action="{{ url_for('tambah_project') }}"
+        method="post"
+      >
+        <label for="judul_project">Title Project:</label>
+        <input type="text" id="judul_project" name="judul_project" required />
+        <label for="deadline">Deadline:</label>
+        <input type="date" id="deadline" name="deadline" required /><br />
+        <label for="mahasiswa">Choose Members:</label>
+        <select id="mahasiswa" name="mahasiswa" multiple required>
+          {% for mahasiswa in mahasiswa_list %}
+          <option value="{{ mahasiswa.id }}">{{ mahasiswa.nama }}</option>
+          {% endfor %}
+        </select>
+        <br />
+        <button type="submit" class="submit-btn">Submit</button>
+      </form>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+  </body>
+</html>

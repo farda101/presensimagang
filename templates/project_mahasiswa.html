@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internship Diary | Project</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='project_mahasiswa.css') }}"
+    />
+    <link rel="icon" href="{{ url_for('static', filename='images/logo-icon.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="logo">
+        <a href="{{ url_for('home_mahasiswa') }}">
+          <div class="internship">Internship</div>
+          <div><span>Diary</span><span class="possessive">'s</span></div>
+        </a>
+      </div>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+      <ul>
+        <li>
+          <a href="{{ url_for('home_mahasiswa') }}">Home</a>
+        </li>
+        <li><a href="{{ url_for('presensi_mahasiswa') }}">Presence</a></li>
+        <li><a href="{{ url_for('permission_mahasiswa') }}">Permission</a></li>
+        <li>
+          <a href="{{ url_for('project_mahasiswa') }}" class="active"
+            >Project</a
+          >
+        </li>
+      </ul>
+      <div class="profile">
+        <img
+          src="{{ url_for('static', filename=mahasiswa.foto_profil if mahasiswa.foto_profil else 'uploads/default_user_icon.png') }}"
+          alt="Foto Profil"
+          class="profile-icon"
+          id="profileIcon"
+        />
+        <div class="dropdown-content" id="dropdownContent">
+          <a href="{{ url_for('profil_mahasiswa') }}">Profile</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="close-menu" onclick="toggleMenu()">&times;</div>
+      <div class="profile-info">
+        <a href="{{ url_for('profil_mahasiswa') }}">
+          <img
+            src="{{ url_for('static', filename=mahasiswa.foto_profil if mahasiswa.foto_profil else 'uploads/default_user_icon.png') }}"
+            alt="Foto Profil"
+          />
+        </a>
+        <p class="nama-mahasiswa">{{ mahasiswa.nama }}</p>
+      </div>
+      <ul>
+        <li>
+          <a href="{{ url_for('home_mahasiswa') }}">Home</a>
+        </li>
+        <li><a href="{{ url_for('presensi_mahasiswa') }}">Presence</a></li>
+        <li><a href="{{ url_for('permission_mahasiswa') }}">Permission</a></li>
+        <li><a href="{{ url_for('project_mahasiswa') }}" class="active">Project</a></li>
+      </ul>
+    </div>
+
+    <div class="content">
+      <!-- Back Arrow Icon Above Form -->
+      <div class="back-icon-container">
+        <i class="fas fa-chevron-left back-arrow" onclick="goBack()"></i>
+      </div>
+      <h2>Project Details</h2>
+      <div class="status-box">
+        <div class="status ongoing">
+          <div class="status-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="status-content">
+            <h3>{{ total_ongoing }}</h3>
+            <p>TOTAL PROJECT ON GOING</p>
+          </div>
+        </div>
+        <div class="status completed">
+          <div class="status-icon">
+            <i class="fas fa-check-square"></i>
+          </div>
+          <div class="status-content">
+            <h3>{{ total_completed }}</h3>
+            <p>TOTAL PROJECT COMPLETED</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="task-header">
+        <button class="export-btn" onclick="window.location.href='/export_excel/project'">
+          EXPORT TO EXCEL
+        </button>        
+        <input
+          type="text"
+          placeholder="Search..."
+          class="search-box"
+          id="searchPresensiInputMentor"
+          onkeyup="searchPresensiMentor()"
+        />
+      </div>
+      
+      <table id="presenceTable" class="table-pagination">
+        <thead>
+          <tr>
+            <th>NO</th>
+            <th><i class="fas fa-file"></i>PROJECT TITLE</th>
+            <th><i class="fas fa-info-circle"></i>STATUS</th>
+            <th><i class="fas fa-calendar-alt"></i>DEADLINE</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for project in projects %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ project.judul_project }}</td>
+            <td>
+              <select onchange="updateStatus('{{ project.id }}', this.value)">
+                <option value="0" {% if project.status == 0 %}selected{% endif %}>On Going</option>
+                <option value="1" {% if project.status == 1 %}selected{% endif %}>Completed</option>
+              </select>
+            </td>
+            <td>{{ project.deadline.strftime('%d %B %Y') }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Pagination Controls -->
+      <div class="pagination-controls">
+        <button id="btnPrev" onclick="prevPage('presenceTable')">Prev</button>
+        <span id="pageNumber-presenceTable"></span>
+        <button id="btnNext" onclick="nextPage('presenceTable')">Next</button>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+      function goBack() {
+          window.history.back();
+      }
+  </script>
+  </body>
+</html>

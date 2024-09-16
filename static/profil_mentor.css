@@ -1,0 +1,456 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 10px 50px;
+  max-width: 100%;
+  margin: 0 auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.6s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.navbar .logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.navbar .logo a {
+  text-decoration: none;
+}
+
+.navbar .logo .internship {
+  line-height: 1.2;
+  font-weight: bold;
+  font-size: 10px;
+  color: black;
+}
+
+.navbar .logo span {
+  color: orange;
+}
+
+.navbar .logo .possessive {
+  color: #0c3b73;
+  font-weight: bold;
+  font-size: 12px;
+  vertical-align: super;
+}
+
+.navbar .menu-icon {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.navbar ul li {
+  margin: 0 15px;
+  transition: transform 0.1s ease;
+}
+
+.navbar ul li:hover {
+  transform: scale(1.1);
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+  transition: color 0.3s ease;
+  padding-bottom: 5px;
+}
+
+.navbar ul li a:hover {
+  color: orange;
+}
+
+.navbar ul li a.active {
+  border-bottom: 2px solid orange;
+}
+
+.navbar .profile {
+  position: relative;
+  display: inline-block;
+}
+
+.navbar .profile img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.navbar .profile img:hover {
+  transform: scale(1.1);
+}
+
+.navbar .profile.active img {
+  transform: scale(1.1);
+}
+
+.navbar .profile .dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: white;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+}
+
+.navbar .profile .dropdown-content a {
+  color: black;
+  padding: 12px 26px;
+  text-decoration: none;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.navbar .profile .dropdown-content a:hover {
+  color: orange;
+  transform: scale(1.1);
+}
+
+.navbar .profile .dropdown-content a.active {
+  border-bottom: 2px solid orange;
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 70%;
+  height: 100%;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.mobile-menu .close-menu {
+  align-self: flex-end;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.mobile-menu .profile-info {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.mobile-menu .profile-info img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.mobile-menu .profile-info p {
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.mobile-menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.mobile-menu ul li {
+  margin: 10px 0;
+  transition: transform 0.1s ease;
+}
+
+.mobile-menu ul li:hover {
+  transform: scale(1.1);
+}
+
+.mobile-menu ul li a {
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+  display: inline-block;
+  padding: 10px 0;
+  transition: color 0.3s ease;
+}
+
+.mobile-menu ul li a:hover {
+  color: orange;
+}
+
+.mobile-menu ul li a.active {
+  border-bottom: 2px solid orange;
+  padding-bottom: 2px;
+}
+
+/* Container for Back Icon */
+.back-icon-container {
+  margin-bottom: 15px;
+}
+
+/* Style the Back arrow*/
+.back-arrow {
+  font-size: 25px; /* This should increase the size of the icon */
+  cursor: pointer;
+  color: #6c757d;
+  transition: color 0.3s ease;
+}
+
+.back-arrow:hover {
+  color: #5a6268;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+h2 {
+  font-size: 28px;
+  color: black;
+  margin-bottom: 20px;
+}
+
+.profil-container {
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  background-color: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-left {
+  flex: 1;
+}
+
+.form-right {
+  flex: 1;
+  max-width: 300px; /* You can adjust this width as needed */
+  text-align: center;
+}
+
+.form-left {
+  margin-right: 70px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+}
+
+.profile-picture label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+  text-align: left;
+}
+
+.profile-picture img {
+  width: 100%;
+  max-height: 390px; /* You can adjust this height as needed */
+  border-radius: 5px;
+  margin-bottom: 13px;
+  border: 2px solid rgb(201, 201, 201);
+  object-fit: cover; /* This ensures the image covers the container without distortion */
+  object-position: center; /* This keeps the image centered */
+  transition: transform 0.2s ease;
+}
+
+.profile-picture img:hover {
+  transform: scale(1.025);
+}
+
+.profile-picture input[type="file"] {
+  width: 100%;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  width: 100px;
+}
+
+.btn-primary {
+  background-color: #0c3b73;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: rgb(25, 78, 130);
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 10px 30px;
+  }
+
+  .profil-container {
+    width: 80%;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 20px;
+  }
+
+  .navbar .menu-icon {
+    display: block;
+  }
+
+  .navbar ul {
+    display: none;
+  }
+
+  .content {
+    height: auto;
+    padding: 20px;
+    justify-content: flex-start;
+  }
+
+  .profil-container {
+    width: 100%;
+    padding: 15px;
+  }
+
+  /* Stack the form and profile picture vertically */
+  .form-wrapper {
+    display: flex;
+    flex-direction: column; /* Stack vertically */
+  }
+
+  .form-left,
+  .form-right {
+    width: 93%;
+    margin-bottom: 20px;
+  }
+
+  .form-right {
+    margin-bottom: 0;
+  }
+
+  .profile-picture img {
+    max-width: 100%;
+    height: auto; /* Ensure image scales properly on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px 15px;
+  }
+
+  .profil-container {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .form-left {
+    width: 93%;
+    margin-bottom: 10px;
+  }
+
+  .form-right {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .profile-picture img {
+    max-width: 100%;
+    height: auto; /* Ensure proper scaling for smaller screens */
+  }
+
+  .button-wrapper {
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+}

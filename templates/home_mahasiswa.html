@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internship Diary | Home</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='home_mahasiswa.css') }}"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/logo-icon.png') }}"
+    />
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+  </head>
+  <body>
+    {% if request.args.get('login_success') %}
+    <div id="loginSuccessPopup" class="popup">
+      <div class="popup-content">
+        <p>Login Successful!</p>
+        <div class="checkmark">&#10004;</div>
+      </div>
+    </div>
+    {% endif %}
+    <div class="navbar">
+      <div class="logo">
+        <a href="{{ url_for('home_mahasiswa') }}">
+          <div class="internship">Internship</div>
+          <div><span>Diary</span><span class="possessive">'s</span></div>
+        </a>
+      </div>
+      <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+      <ul>
+        <li>
+          <a href="{{ url_for('home_mahasiswa') }}" class="active">Home</a>
+        </li>
+        <li><a href="{{ url_for('presensi_mahasiswa') }}">Presence</a></li>
+        <li><a href="{{ url_for('permission_mahasiswa') }}">Permission</a></li>
+        <li><a href="{{ url_for('project_mahasiswa') }}">Project</a></li>
+      </ul>
+      <div class="profile">
+        <img
+          src="{{ url_for('static', filename=mahasiswa.foto_profil if mahasiswa.foto_profil else 'uploads/default_user_icon.png') }}"
+          alt="Foto Profil"
+          class="profile-icon"
+          id="profileIcon"
+        />
+        <div class="dropdown-content" id="dropdownContent">
+          <a href="{{ url_for('profil_mahasiswa') }}">Profile</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="close-menu" onclick="toggleMenu()">&times;</div>
+      <div class="profile-info">
+        <a href="{{ url_for('profil_mahasiswa') }}">
+          <img
+            src="{{ url_for('static', filename=mahasiswa.foto_profil if mahasiswa.foto_profil else 'uploads/default_user_icon.png') }}"
+            alt="Foto Profil"
+          />
+        </a>
+        <p class="nama-mahasiswa">{{ mahasiswa.nama }}</p>
+      </div>
+      <ul>
+        <li>
+          <a href="{{ url_for('home_mahasiswa') }}" class="active">Home</a>
+        </li>
+        <li><a href="{{ url_for('presensi_mahasiswa') }}">Presence</a></li>
+        <li><a href="{{ url_for('permission_mahasiswa') }}">Permission</a></li>
+        <li><a href="{{ url_for('project_mahasiswa') }}">Project</a></li>
+      </ul>
+    </div>
+
+    <div class="content">
+      <div class="qr-container" id="qrContainer">
+        <h1>Scan QR Code</h1>
+        <h5>Scan this QR Code in the app to fill presence.</h5>
+        <img
+          id="qrCode"
+          src="{{ url_for('static', filename='images/qr.png') }}"
+          alt="QR Code"
+          onclick="openPopupQR()"
+        />
+      </div>
+    </div>
+
+    <div id="myModal" class="modal">
+      <span class="close" onclick="closePopupQR()">&times;</span>
+      <img class="modal-content" id="imgPopup" />
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>
